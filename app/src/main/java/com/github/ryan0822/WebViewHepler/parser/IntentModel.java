@@ -14,9 +14,11 @@ public class IntentModel {
     static final String KEY_INTENT_STRING = "intentString";
     static final String KEY_ACTION = "action";
     static final String KEY_FALLBACK = "S.browser_fallback_url";
-    private static final String KEY_COMPONENT = "component";
+    static final String KEY_COMPONENT = "component";
+    static final String KEY_URI = "uri";
 
     Map<String, String> map = new HashMap<String, String>();
+    private String uriString;
 
     public String getScheme() {
         return map.get(KEY_SCHEME);
@@ -44,5 +46,13 @@ public class IntentModel {
 
     public String getIntentString() {
         return map.get(KEY_INTENT_STRING);
+    }
+
+    public String getUriString() {
+        return map.get(KEY_URI).replace("intent", getScheme());
+    }
+
+    public boolean validate() {
+        return false;
     }
 }

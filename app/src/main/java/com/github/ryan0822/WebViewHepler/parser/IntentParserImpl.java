@@ -14,7 +14,11 @@ public class IntentParserImpl implements IntentParser {
 
         String tmp = url.substring(url.indexOf(INTENT_PREFIX));
         String intentString = tmp.substring(0, tmp.indexOf(INTENT_SUFFIX) + INTENT_SUFFIX.length());
+        String uriString = url.substring(0, url.indexOf(INTENT_PREFIX));
+
+        intentModel.map.put(IntentModel.KEY_URI, uriString);
         setIntentModelByIntentString(intentModel, intentString);
+
         return intentModel;
     }
 
