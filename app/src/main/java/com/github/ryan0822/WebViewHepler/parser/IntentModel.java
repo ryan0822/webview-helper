@@ -49,10 +49,13 @@ public class IntentModel {
     }
 
     public String getUriString() {
-        return map.get(KEY_URI).replace("intent", getScheme());
-    }
+        String uri = map.get(KEY_URI);
+        String scheme = getScheme();
 
-    public boolean validate() {
-        return false;
+        if(scheme != null && scheme.length() > 0) {
+            return uri.replace("intent", scheme);
+        } else {
+            return uri;
+        }
     }
 }

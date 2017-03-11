@@ -14,7 +14,7 @@ publish {
     userOrg = 'ryan0822'
     groupId = 'com.github.ryan0822.webview-helper'
     artifactId = 'webview-helper'
-    publishVersion = '0.0.5'
+    publishVersion = '0.0.14'
     desc = ''
     website = 'https://github.com/ryan0822/webview-helper'
     issueTracker = "${website}/issues"

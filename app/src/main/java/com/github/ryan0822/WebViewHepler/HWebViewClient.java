@@ -27,8 +27,12 @@ public class HWebViewClient extends WebViewClient {
         } else if (url != null && url.startsWith("market://")) {
             view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             return true;
-            
-        } else if (url.startsWith("intent://")) {
+        } else if (url != null && url.indexOf("//play.google.com/store/apps/details") > -1) {
+            view.getContext().startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(url.replaceFirst("^https?://play.google.com/store/apps/", "market://"))));
+            return true;
+        } else if (url.startsWith("intent://") || url.indexOf("#Intent") > -1) {
+            //url.indexOf("#Intent") > -1는 잘못된 Intent(카카오 플러스친구)
             IntentModel intentModel = parser.parseUrl(url);
             Intent intent = new Intent(Intent.ACTION_VIEW);
 
@@ -42,8 +46,12 @@ public class HWebViewClient extends WebViewClient {
                 intent.setComponent(new ComponentName(intentModel.getPackageName(), intentModel.getComponent()));
             }
 
+            String category = intentModel.getCategory();
+            if (category != null && !category.equals("")) {
+                intent.addCategory(intentModel.getCategory());
+            }
+
             intent.setPackage(intentModel.getPackageName());
-            intent.addCategory(intentModel.getCategory());
             intent.setData(Uri.parse(intentModel.getUriString()));
 
             try {
@@ -53,7 +61,12 @@ public class HWebViewClient extends WebViewClient {
             }
 
             return true;
-
+        } else if (!url.startsWith("http") && !url.startsWith("https")) {
+            try {
+                view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            } catch (ActivityNotFoundException e) {
+            }
+            return true;
         } else {
             return super.shouldOverrideUrlLoading(view, url);
         }
